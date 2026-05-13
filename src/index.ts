@@ -6,7 +6,15 @@ import { reviewCode } from './agent.js'
 import { CodeReviewRequest, CodeReviewResponse, HealthResponse } from './types.js'
 
 const app = express()
-const PORT = parseInt(process.env.PORT || '3000', 10)
+const PORT = parseInt(process.env.PORT || '8080', 10)
+
+const required = ['NVM_API_KEY', 'NVM_ENVIRONMENT', 'NVM_AGENT_ID', 'NVM_PLAN_ID', 'GEMINI_API_KEY']
+for (const key of required) {
+  if (!process.env[key]) {
+    console.error(`Missing required env var: ${key}`)
+    process.exit(1)
+  }
+}
 
 app.use(cors())
 app.use(express.json({ limit: '1mb' }))
